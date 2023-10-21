@@ -3,21 +3,32 @@ import {
   system
 } from "@minecraft/server";
 
-let myArray = [1];
+let myArray = [false];
 
 const express = require('express');
-const router = express.Router();
-const port = process.env.PORT || 3000;
+const app = express();
+const bodyParser = require('body-parser');
 
-router.post('/api/message', async (req, res) => {
+app.use(bodyParser.json());
+
+app.post('/api/message', async (req, res) => {
   let user = req.message;
+  const message = req.body.message;
+  console.log('Received message:', message);
+
   if(user!= null) world.sendMessage("喔YES收到了");
   if(user === 'fox') {
     myArray[0] = true;
   } else {
     myArray[1] = false;
   }
-  res.json({ })
+  res.send('喔YES收到了')
+});
+
+const PORT = 9000; // 你可以使用你想要的埠號
+
+app.listen(PORT, () => {
+  console.log(`Receiver server is running on http://localhost:${PORT}`);
 });
 
 function getPlayer() {
